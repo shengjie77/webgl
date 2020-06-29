@@ -1,0 +1,14 @@
+{
+	"name": "webgl",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "ShengJie",
+	"license": "MIT",
+	"scripts": {
+		"pano": "parcel ./src/pano/pano.html"
+	},
+	"devDependencies": {
+		"parcel-bundler": "^1.12.4",
+		"typescript": "^3.9.5"
+	}
+}
