@@ -52,3 +52,7 @@ function createCanvas(parent?: HTMLElement): HTMLCanvasElement {
 
 	return canvas;
 }
+
+class JColor {
+
+}

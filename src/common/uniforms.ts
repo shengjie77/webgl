@@ -7,8 +7,8 @@ export class Uniforms {
 		this.program = program;
 
 		this.initParameters(gl, program);
-	}
-
+    }
+    
 	public setValue(name: string, value: any) {
 		const p = this.parameters.find(p => p.name === name);
 		if (!p) {
