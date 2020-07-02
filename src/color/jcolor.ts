@@ -20,9 +20,16 @@ export class JColor {
 		]
 	}
 
+	// ------------------------------------------------------- //
+	// ---------------  Private Section Below  --------------- //
+	// ------------------------------------------------------- //
+
 	private r: number;
+
 	private g: number;
+
 	private b: number;
+
 	private a: number;
 
 }
