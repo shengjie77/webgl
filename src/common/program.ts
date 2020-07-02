@@ -1,4 +1,5 @@
 import { assertNotNullable } from "src/utils/assert";
+import { Uniforms } from 'src/common/uniforms';
 
 interface ProgramParameter {
 	vertexShader: string;
@@ -28,7 +29,14 @@ export class Program {
 		}
 
 		this.program = program;
+		this.gl = gl;
 	}
+
+	public getUniforms() {
+		return new Uniforms(this.gl, this.program);
+	}
+
+	private gl: WebGLRenderingContext;
 
 }
 

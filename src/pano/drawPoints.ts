@@ -7,14 +7,13 @@ export function drawPoints(gl: WebGLRenderingContext, pts: Point[], size: number
 	const program = new Program(gl, {
 		vertexShader: pointVert,
 		fragmentShader: pointFrag,
-	}).program;
+	});
 
-	gl.useProgram(program);
+	gl.useProgram(program.program);
+	const uniforms = program.getUniforms();
+	uniforms.setValue('u_PointSize', size);
 
-	const pointSizeLocation = gl.getUniformLocation(program, 'u_PointSize');
-	gl.uniform1f(pointSizeLocation, size);
-
-	const pointLocation = gl.getAttribLocation(program, 'a_Position');
+	const pointLocation = gl.getAttribLocation(program.program, 'a_Position');
 	const buffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 	const array = new Float32Array(pts.flatMap(pt => [pt.x, pt.y]))
@@ -23,4 +22,5 @@ export function drawPoints(gl: WebGLRenderingContext, pts: Point[], size: number
 	gl.enableVertexAttribArray(pointLocation);
 	gl.vertexAttribPointer(pointLocation, 2, gl.FLOAT, false, 0, 0);
 	gl.drawArrays(gl.POINTS, 0, pts.length);
+
 }
