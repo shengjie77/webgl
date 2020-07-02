@@ -1,6 +1,8 @@
 import { drawPoints } from 'src/pano/drawPoints';
-import { drawRect, Color } from 'src/pano/drawRect';
-import { Rect } from 'src/common/rect';
+import { drawRect } from 'src/pano/drawRect';
+import { JRect, JPoint } from 'src/math';
+import { JColor } from 'src/color';
+
 
 main();
 
@@ -28,16 +30,33 @@ function render(gl: WebGLRenderingContext) {
 	gl.clearColor(0, 0, 0, 1);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
-	// drawPoints(gl, [
-	// 		{ x: 1, y: 1 },
-	// 		{ x: -1, y: 0 },
-	// 		{ x: -1, y: -1 },
-	//   ], 20);
-	
+	testDrawPoints(gl);
+
+	testDrawRect(gl);
+}
+
+function testDrawPoints(gl: WebGLRenderingContext) {
+	drawPoints(
+		gl,
+		[
+			JPoint.from(1, 1),
+			JPoint.from(-1, 0),
+			JPoint.from(-1, -1),
+		],
+		20,
+	);
+}
+
+function testDrawRect(gl: WebGLRenderingContext) {
 	drawRect(
 		gl,
-		new Rect(0, 0, 0.2, 0.2),
-		new Color(),
+		JRect.from({
+			x: 0,
+			y: 0,
+			width: 0.2,
+			height: 0.2,
+		}),
+		JColor.fromRgba([1, 0, 1, 0.5]),
 	)
 }
 
@@ -51,8 +70,4 @@ function createCanvas(parent?: HTMLElement): HTMLCanvasElement {
 	parentNode.appendChild(canvas);
 
 	return canvas;
-}
-
-class JColor {
-
 }

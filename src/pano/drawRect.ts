@@ -1,13 +1,10 @@
-import { Rect } from 'src/common/rect';
 import { Program } from 'src/common/program';
 import { rectVert } from 'src/pano/shader/rect.vert';
 import { rectFrag } from 'src/pano/shader/rect.frag';
+import { JRect } from 'src/math';
+import { JColor } from 'src/color';
 
-export class Color {
-
-}
-
-export function drawRect(gl: WebGLRenderingContext, rect: Rect, color: Color) {
+export function drawRect(gl: WebGLRenderingContext, rect: JRect, color: JColor) {
 	const program = new Program(gl, {
 		vertexShader: rectVert,
 		fragmentShader: rectFrag,
@@ -16,7 +13,7 @@ export function drawRect(gl: WebGLRenderingContext, rect: Rect, color: Color) {
 	gl.useProgram(program.program);
 
 	const uniforms = program.getUniforms();
-	uniforms.setValue('u_Color', [1, 1, 0.5, 1]);
+	uniforms.setValue('u_Color', color.getRgba());
 
 	const positionLocation = gl.getAttribLocation(program.program, 'a_Position');
 	const positionBuffer = gl.createBuffer();
