@@ -1,11 +1,11 @@
-import { Program } from 'src/common/program';
+import { JProgram } from 'src/webgl';
 import { rectVert } from 'src/pano/shader/rect.vert';
 import { rectFrag } from 'src/pano/shader/rect.frag';
 import { JRect } from 'src/math';
 import { JColor } from 'src/color';
 
 export function drawRect(gl: WebGLRenderingContext, rect: JRect, color: JColor) {
-	const program = new Program(gl, {
+	const program = new JProgram(gl, {
 		vertexShader: rectVert,
 		fragmentShader: rectFrag,
 	})

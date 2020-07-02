@@ -6,7 +6,7 @@ interface ProgramParameter {
 	fragmentShader: string;
 }
 
-export class Program {
+export class JProgram {
 
 	public program: WebGLProgram;
 

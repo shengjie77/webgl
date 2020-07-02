@@ -1,10 +1,10 @@
-import { Program } from 'src/common/program';
+import { JProgram } from 'src/webgl';
 import { pointFrag } from 'src/pano/shader/point.frag';
 import { pointVert } from 'src/pano/shader/point.vert';
 import { JPoint } from 'src/math';
 
 export function drawPoints(gl: WebGLRenderingContext, pts: JPoint[], size: number) {
-	const program = new Program(gl, {
+	const program = new JProgram(gl, {
 		vertexShader: pointVert,
 		fragmentShader: pointFrag,
 	});
