@@ -27,6 +27,7 @@ export class Uniforms {
 	private getValueSetter(type: GLenum) {
 		const table = {
 			[this.gl.FLOAT]: uniform1f,
+			[this.gl.FLOAT_VEC4]: uniform4fv,
 		}
 
 		return table[type];
@@ -50,4 +51,8 @@ export class Uniforms {
 
 function uniform1f(gl: WebGLRenderingContext, location: WebGLUniformLocation, value: GLfloat) {
 	gl.uniform1f(location, value);
+}
+
+function uniform4fv(gl: WebGLRenderingContext, location: WebGLUniformLocation, value: Float32List) {
+	gl.uniform4fv(location, value);
 }

@@ -1,4 +1,6 @@
 import { drawPoints } from 'src/pano/drawPoints';
+import { drawRect, Color } from 'src/pano/drawRect';
+import { Rect } from 'src/common/rect';
 
 main();
 
@@ -26,11 +28,17 @@ function render(gl: WebGLRenderingContext) {
 	gl.clearColor(0, 0, 0, 1);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
-	drawPoints(gl, [
-			{ x: 1, y: 1 },
-			{ x: -1, y: 0 },
-			{ x: -1, y: -1 },
-    ], 20);
+	// drawPoints(gl, [
+	// 		{ x: 1, y: 1 },
+	// 		{ x: -1, y: 0 },
+	// 		{ x: -1, y: -1 },
+	//   ], 20);
+	
+	drawRect(
+		gl,
+		new Rect(0, 0, 0.2, 0.2),
+		new Color(),
+	)
 }
 
 function createCanvas(parent?: HTMLElement): HTMLCanvasElement {
