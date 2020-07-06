@@ -6,7 +6,7 @@ export class JBrush {
 		return new JBrush(param);
 	}
 
-	constructor(param: Partial<JBrushParameter>) {
+	constructor(param?: Partial<JBrushParameter>) {
 		const { color } = this.mergeWithDefault(param);
 
 		this.color = color;
@@ -24,7 +24,7 @@ export class JBrush {
 	// ---------------  Private Section Below  --------------- //
 	// ------------------------------------------------------- //
 
-	private mergeWithDefault(param: Partial<JBrushParameter>) {
+	private mergeWithDefault(param?: Partial<JBrushParameter>) {
 		const paramWithDefault = {
 			...this.getDefaultParameter(),
 			...param,

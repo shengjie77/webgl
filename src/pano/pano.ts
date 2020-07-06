@@ -1,7 +1,6 @@
 import { drawPoints } from 'src/pano/drawPoints';
-import { drawRect } from 'src/pano/drawRect';
 import { JRect, JPoint } from 'src/math';
-import { JColor } from 'src/color';
+import { JPainter } from 'src/painter';
 
 
 main();
@@ -48,16 +47,14 @@ function testDrawPoints(gl: WebGLRenderingContext) {
 }
 
 function testDrawRect(gl: WebGLRenderingContext) {
-	drawRect(
-		gl,
-		JRect.from({
-			x: 0,
-			y: 0,
-			width: 0.2,
-			height: 0.2,
-		}),
-		JColor.fromRgba([1, 0, 1, 0.5]),
-	)
+	const painter = new JPainter(gl.canvas);
+	const rect = JRect.from({
+		x: 0,
+		y: 0,
+		width: 0.2,
+		height: 0.2,
+	})
+	painter.drawRect(rect);
 }
 
 function createCanvas(parent?: HTMLElement): HTMLCanvasElement {

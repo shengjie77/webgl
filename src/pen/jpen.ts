@@ -6,7 +6,11 @@ export class JPen {
 		return new JPen(param);
 	}
 
-	constructor(param: PartialParameter) {
+	constructor(param?: PartialParameter) {
+		if (!param) {
+			return;
+		}
+
 		if (param.color) {
 			this.color = param.color;
 		}
