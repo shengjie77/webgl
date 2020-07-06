@@ -1,5 +1,5 @@
 import { IPainter } from 'src/painter';
-import { JPoint, JLine, JRect } from 'src/math';
+import { JPoint, JLine, JRect, JMatrix3 } from 'src/math';
 import { JPen } from 'src/pen';
 import { JBrush } from 'src/brush';
 import { assertNotNullable } from 'src/utils/assert';
@@ -19,6 +19,8 @@ export class JPainter implements IPainter {
 		const ctx = canvas.getContext('webgl');
 		assertNotNullable(ctx);
 		this.ctx = ctx;
+
+		this.updateProjectMatrix();
 	}
 
 	public drawPoint(pt: JPoint) {
@@ -44,6 +46,7 @@ export class JPainter implements IPainter {
 		const uniforms = program.getUniforms();
 		const color = new JColor([1, 0, 0.5, 1]);
 		uniforms.setValue('u_Color', color.getRgba());
+		uniforms.setValue('u_projection', this.projectMatrix.toArray());
 
 		const positionLocation = gl.getAttribLocation(program.program, 'a_Position');
 		const positionBuffer = gl.createBuffer();
@@ -93,10 +96,27 @@ export class JPainter implements IPainter {
 	// ---------------  Private Section Below  --------------- //
 	// ------------------------------------------------------- //
 
+	private updateProjectMatrix() {
+		const width = this.ctx.canvas.width;
+		const height = this.ctx.canvas.height;
+
+		this.projectMatrix = new JMatrix3()
+			.set(
+				1, 0, 0,
+				0, -1, 0,
+				0, 0, 1,
+			)
+			.scale(1 / width, 1 / height)
+			.translate(-1, 1)
+			.transpose()
+	}
+
 	private ctx: WebGLRenderingContext;
 
 	private pen: JPen;
 
 	private brush: JBrush;
+
+	private projectMatrix = new JMatrix3();
 
 }

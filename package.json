@@ -13,5 +13,8 @@
 	},
 	"alias": {
 		"src": "./src"
+	},
+	"dependencies": {
+		"three": "^0.118.3"
 	}
 }

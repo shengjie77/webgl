@@ -1,7 +1,8 @@
+import * as THREE from 'three';
+
 import { drawPoints } from 'src/pano/drawPoints';
 import { JRect, JPoint } from 'src/math';
 import { JPainter } from 'src/painter';
-
 
 main();
 
@@ -38,9 +39,10 @@ function testDrawPoints(gl: WebGLRenderingContext) {
 	drawPoints(
 		gl,
 		[
+			JPoint.from(0, 0),
 			JPoint.from(1, 1),
-			JPoint.from(-1, 0),
-			JPoint.from(-1, -1),
+			// JPoint.from(0, -1),
+			// JPoint.from(0.5, 0),
 		],
 		20,
 	);
@@ -49,10 +51,10 @@ function testDrawPoints(gl: WebGLRenderingContext) {
 function testDrawRect(gl: WebGLRenderingContext) {
 	const painter = new JPainter(gl.canvas);
 	const rect = JRect.from({
-		x: 0,
-		y: 0,
-		width: 0.2,
-		height: 0.2,
+		x: 20,
+		y: 20,
+		width: 100,
+		height: 200,
 	})
 	painter.drawRect(rect);
 }
