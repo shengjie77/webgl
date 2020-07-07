@@ -29,6 +29,7 @@ export class Uniforms {
 			[this.gl.FLOAT]: uniform1f,
 			[this.gl.FLOAT_VEC4]: uniform4fv,
 			[this.gl.FLOAT_MAT3]: uniformMatrix3fv,
+			[this.gl.FLOAT_MAT4]: uniformMatrix4fv,
 		}
 
 		return table[type];
@@ -60,4 +61,8 @@ function uniform4fv(gl: WebGLRenderingContext, location: WebGLUniformLocation, v
 
 function uniformMatrix3fv(gl: WebGLRenderingContext, location: WebGLUniformLocation, value: Float32List) {
 	gl.uniformMatrix3fv(location, false, value);
+}
+
+function uniformMatrix4fv(gl: WebGLRenderingContext, location: WebGLUniformLocation, value: Float32List) {
+	gl.uniformMatrix4fv(location, false, value);
 }

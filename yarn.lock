@@ -897,6 +897,11 @@
     "@parcel/utils" "^1.11.0"
     physical-cpu-count "^2.0.0"
 
+"@types/lodash@^4.14.157":
+  version "4.14.157"
+  resolved "http://npm-registry.qunhequnhe.com/@types/lodash/download/@types/lodash-4.14.157.tgz#fdac1c52448861dfde1a2e1515dbc46e54926dc8"
+  integrity sha1-/awcUkSIYd/eGi4VFdvEblSSbcg=
+
 "@types/q@^1.5.1":
   version "1.5.4"
   resolved "http://npm-registry.qunhequnhe.com/@types/q/download/@types/q-1.5.4.tgz#15925414e0ad2cd765bfef58842f7e26a7accb24"
