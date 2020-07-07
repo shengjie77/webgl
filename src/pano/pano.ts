@@ -47,11 +47,16 @@ function render(gl: WebGLRenderingContext) {
 	gl.viewport(0, 0, width, height);
 
 	gl.clearColor(1, 1, 1, 1);
-	gl.clear(gl.COLOR_BUFFER_BIT);
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-	testDrawPoints(gl);
+	gl.enable(gl.CULL_FACE);
+	
+	// Enable the depth buffer
+	gl.enable(gl.DEPTH_TEST);
 
-	testDrawRect(gl);
+	// testDrawPoints(gl);
+
+	// testDrawRect(gl);
 
 	drawF(gl);
 }
@@ -136,27 +141,27 @@ function drawF(gl: WebGLRenderingContext) {
 	const data = new Float32Array([
 		// left column front
 		0, 0, 0,
-		30, 0, 0,
-		0, 150, 0,
 		0, 150, 0,
 		30, 0, 0,
+		0, 150, 0,
 		30, 150, 0,
+		30, 0, 0,
 
 		// top rung front
 		30, 0, 0,
-		100, 0, 0,
-		30, 30, 0,
 		30, 30, 0,
 		100, 0, 0,
+		30, 30, 0,
 		100, 30, 0,
+		100, 0, 0,
 
 		// middle rung front
 		30, 60, 0,
-		67, 60, 0,
-		30, 90, 0,
 		30, 90, 0,
 		67, 60, 0,
+		30, 90, 0,
 		67, 90, 0,
+		67, 60, 0,
 
 		// left column back
 		0, 0, 30,
@@ -208,27 +213,27 @@ function drawF(gl: WebGLRenderingContext) {
 
 		// between top rung and middle
 		30, 30, 0,
+		30, 60, 30,
 		30, 30, 30,
-		30, 60, 30,
 		30, 30, 0,
-		30, 60, 30,
 		30, 60, 0,
+		30, 60, 30,
 
 		// top of middle rung
 		30, 60, 0,
+		67, 60, 30,
 		30, 60, 30,
-		67, 60, 30,
 		30, 60, 0,
-		67, 60, 30,
 		67, 60, 0,
+		67, 60, 30,
 
 		// right of middle rung
 		67, 60, 0,
+		67, 90, 30,
 		67, 60, 30,
-		67, 90, 30,
 		67, 60, 0,
-		67, 90, 30,
 		67, 90, 0,
+		67, 90, 30,
 
 		// bottom of middle rung.
 		30, 90, 0,
@@ -240,11 +245,11 @@ function drawF(gl: WebGLRenderingContext) {
 
 		// right of bottom
 		30, 90, 0,
+		30, 150, 30,
 		30, 90, 30,
-		30, 150, 30,
 		30, 90, 0,
-		30, 150, 30,
 		30, 150, 0,
+		30, 150, 30,
 
 		// bottom
 		0, 150, 0,
@@ -260,7 +265,7 @@ function drawF(gl: WebGLRenderingContext) {
 		0, 150, 30,
 		0, 0, 0,
 		0, 150, 30,
-		0, 150, 0
+		0, 150, 0,
 	]);
 	gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
 
@@ -416,7 +421,7 @@ function getTransform(gl: WebGLRenderingContext): number[] {
 	const project = new THREE.Matrix4().makeOrthographic(
 		0, gl.canvas.width,
 		0, gl.canvas.height,
-		-200, 1000,
+		-400, 400,
 	);
 	const translate = new THREE.Matrix4().makeTranslation(setting.x, setting.y, setting.z);
 
