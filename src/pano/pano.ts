@@ -95,17 +95,27 @@ function createCanvas(parent?: HTMLElement): HTMLCanvasElement {
 function drawF(gl: WebGLRenderingContext) {
 	const vert = `
 		attribute vec4 a_position;
+		attribute vec4 a_color;
 
 		uniform mat4 u_projection;
 
+		varying vec4 v_color;
+
 		void main() {
 			gl_Position = u_projection * a_position;
+
+			v_color = a_color;
 		}
 	`;
 
 	const frag = `
+		precision mediump float;
+
+		varying vec4 v_color;
+
 		void main() {
-			gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+			gl_FragColor = v_color;
+			// gl_FragColor = vec4(1.0, 0, 1.0, 1.0);
 		}
 	`;
 
@@ -124,7 +134,7 @@ function drawF(gl: WebGLRenderingContext) {
 	const buffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 	const data = new Float32Array([
-		// left column
+		// left column front
 		0, 0, 0,
 		30, 0, 0,
 		0, 150, 0,
@@ -132,7 +142,7 @@ function drawF(gl: WebGLRenderingContext) {
 		30, 0, 0,
 		30, 150, 0,
 
-		// top rung
+		// top rung front
 		30, 0, 0,
 		100, 0, 0,
 		30, 30, 0,
@@ -140,21 +150,266 @@ function drawF(gl: WebGLRenderingContext) {
 		100, 0, 0,
 		100, 30, 0,
 
-		// middle rung
+		// middle rung front
 		30, 60, 0,
 		67, 60, 0,
 		30, 90, 0,
 		30, 90, 0,
 		67, 60, 0,
 		67, 90, 0,
+
+		// left column back
+		0, 0, 30,
+		30, 0, 30,
+		0, 150, 30,
+		0, 150, 30,
+		30, 0, 30,
+		30, 150, 30,
+
+		// top rung back
+		30, 0, 30,
+		100, 0, 30,
+		30, 30, 30,
+		30, 30, 30,
+		100, 0, 30,
+		100, 30, 30,
+
+		// middle rung back
+		30, 60, 30,
+		67, 60, 30,
+		30, 90, 30,
+		30, 90, 30,
+		67, 60, 30,
+		67, 90, 30,
+
+		// top
+		0, 0, 0,
+		100, 0, 0,
+		100, 0, 30,
+		0, 0, 0,
+		100, 0, 30,
+		0, 0, 30,
+
+		// top rung right
+		100, 0, 0,
+		100, 30, 0,
+		100, 30, 30,
+		100, 0, 0,
+		100, 30, 30,
+		100, 0, 30,
+
+		// under top rung
+		30, 30, 0,
+		30, 30, 30,
+		100, 30, 30,
+		30, 30, 0,
+		100, 30, 30,
+		100, 30, 0,
+
+		// between top rung and middle
+		30, 30, 0,
+		30, 30, 30,
+		30, 60, 30,
+		30, 30, 0,
+		30, 60, 30,
+		30, 60, 0,
+
+		// top of middle rung
+		30, 60, 0,
+		30, 60, 30,
+		67, 60, 30,
+		30, 60, 0,
+		67, 60, 30,
+		67, 60, 0,
+
+		// right of middle rung
+		67, 60, 0,
+		67, 60, 30,
+		67, 90, 30,
+		67, 60, 0,
+		67, 90, 30,
+		67, 90, 0,
+
+		// bottom of middle rung.
+		30, 90, 0,
+		30, 90, 30,
+		67, 90, 30,
+		30, 90, 0,
+		67, 90, 30,
+		67, 90, 0,
+
+		// right of bottom
+		30, 90, 0,
+		30, 90, 30,
+		30, 150, 30,
+		30, 90, 0,
+		30, 150, 30,
+		30, 150, 0,
+
+		// bottom
+		0, 150, 0,
+		0, 150, 30,
+		30, 150, 30,
+		0, 150, 0,
+		30, 150, 30,
+		30, 150, 0,
+
+		// left side
+		0, 0, 0,
+		0, 0, 30,
+		0, 150, 30,
+		0, 0, 0,
+		0, 150, 30,
+		0, 150, 0
 	]);
 	gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+
+	// create color buffer
+	const colorBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+	const colorData = new Uint8Array([
+		// left column front
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+
+		// top rung front
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+
+		// middle rung front
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+		200, 70, 120,
+
+		// left column back
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+
+		// top rung back
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+
+		// middle rung back
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+		80, 70, 200,
+
+		// top
+		70, 200, 210,
+		70, 200, 210,
+		70, 200, 210,
+		70, 200, 210,
+		70, 200, 210,
+		70, 200, 210,
+
+		// top rung right
+		200, 200, 70,
+		200, 200, 70,
+		200, 200, 70,
+		200, 200, 70,
+		200, 200, 70,
+		200, 200, 70,
+
+		// under top rung
+		210, 100, 70,
+		210, 100, 70,
+		210, 100, 70,
+		210, 100, 70,
+		210, 100, 70,
+		210, 100, 70,
+
+		// between top rung and middle
+		210, 160, 70,
+		210, 160, 70,
+		210, 160, 70,
+		210, 160, 70,
+		210, 160, 70,
+		210, 160, 70,
+
+		// top of middle rung
+		70, 180, 210,
+		70, 180, 210,
+		70, 180, 210,
+		70, 180, 210,
+		70, 180, 210,
+		70, 180, 210,
+
+		// right of middle rung
+		100, 70, 210,
+		100, 70, 210,
+		100, 70, 210,
+		100, 70, 210,
+		100, 70, 210,
+		100, 70, 210,
+
+		// bottom of middle rung.
+		76, 210, 100,
+		76, 210, 100,
+		76, 210, 100,
+		76, 210, 100,
+		76, 210, 100,
+		76, 210, 100,
+
+		// right of bottom
+		140, 210, 80,
+		140, 210, 80,
+		140, 210, 80,
+		140, 210, 80,
+		140, 210, 80,
+		140, 210, 80,
+
+		// bottom
+		90, 130, 110,
+		90, 130, 110,
+		90, 130, 110,
+		90, 130, 110,
+		90, 130, 110,
+		90, 130, 110,
+
+		// left side
+		160, 160, 220,
+		160, 160, 220,
+		160, 160, 220,
+		160, 160, 220,
+		160, 160, 220,
+		160, 160, 220
+	])
+	gl.bufferData(gl.ARRAY_BUFFER, colorData, gl.STATIC_DRAW);
 
 	// asign to attribute
 	const location = gl.getAttribLocation(program.program, 'a_position');
 	gl.enableVertexAttribArray(location);
+	gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 	gl.vertexAttribPointer(location, 3, gl.FLOAT, false, 0, 0);
-	gl.drawArrays(gl.TRIANGLES, 0, 18);
+
+	gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+	const colorLocation = gl.getAttribLocation(program.program, 'a_color');
+	gl.enableVertexAttribArray(colorLocation);
+	gl.vertexAttribPointer(colorLocation, 3, gl.UNSIGNED_BYTE, true, 0, 0);
+
+	gl.drawArrays(gl.TRIANGLES, 0, 16 * 6);
 }
 
 function getTransform(gl: WebGLRenderingContext): number[] {
