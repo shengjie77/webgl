@@ -53,7 +53,7 @@ function testDrawRect(gl: WebGLRenderingContext) {
 	const rect = JRect.from({
 		x: 20,
 		y: 20,
-		width: 100,
+		width: 200,
 		height: 200,
 	})
 	painter.drawRect(rect);

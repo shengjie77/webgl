@@ -108,7 +108,6 @@ export class JPainter implements IPainter {
 			)
 			.scale(1 / width, 1 / height)
 			.translate(-1, 1)
-			.transpose()
 	}
 
 	private ctx: WebGLRenderingContext;
