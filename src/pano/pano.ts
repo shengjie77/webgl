@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 import { debounce, wrap } from 'lodash';
 
-
 import { drawPoints } from 'src/pano/drawPoints';
 import { JRect, JPoint } from 'src/math';
 import { JPainter } from 'src/painter';
 import { JProgram } from 'src/webgl';
+import { fUrl } from 'src/pano/assets/f_png';
 
 const setting = {
 	x: 111,
@@ -27,6 +27,10 @@ function main() {
 	if (!gl) {
 		return;
 	}
+
+	const img = new Image();
+	img.src = fUrl;
+	img.onload = () => console.log('loaded')
 
 	createSetting(() => {
 		render(gl);
@@ -151,10 +155,10 @@ function drawF(gl: WebGLRenderingContext) {
 	gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 	gl.vertexAttribPointer(location, 3, gl.FLOAT, false, 0, 0);
 
-	gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-	const colorLocation = gl.getAttribLocation(program.program, 'a_color');
-	gl.enableVertexAttribArray(colorLocation);
-	gl.vertexAttribPointer(colorLocation, 3, gl.UNSIGNED_BYTE, true, 0, 0);
+	// gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+	// const colorLocation = gl.getAttribLocation(program.program, 'a_color');
+	// gl.enableVertexAttribArray(colorLocation);
+	// gl.vertexAttribPointer(colorLocation, 3, gl.UNSIGNED_BYTE, true, 0, 0);
 
 	gl.drawArrays(gl.TRIANGLES, 0, 16 * 6);
 }
@@ -534,5 +538,5 @@ const colorData = [
 	160, 160, 220,
 	160, 160, 220,
 	160, 160, 220,
-	160, 160, 220
+	160, 160, 220,
 ]
