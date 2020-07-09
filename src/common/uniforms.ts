@@ -30,6 +30,7 @@ export class Uniforms {
 			[this.gl.FLOAT_VEC4]: uniform4fv,
 			[this.gl.FLOAT_MAT3]: uniformMatrix3fv,
 			[this.gl.FLOAT_MAT4]: uniformMatrix4fv,
+			[this.gl.SAMPLER_2D]: uniform1i,
 		}
 
 		return table[type];
@@ -43,12 +44,18 @@ export class Uniforms {
 
 			this.parameters.push(param);
 		}
+
+		console.log(this.parameters, this.gl);
 	}
 
 	private gl: WebGLRenderingContext;
 	private program: WebGLProgram;
 	private parameters: WebGLActiveInfo[] = [];
 	
+}
+
+function uniform1i(gl: WebGLRenderingContext, location: WebGLUniformLocation, value: GLint) {
+	gl.uniform1i(location, value);
 }
 
 function uniform1f(gl: WebGLRenderingContext, location: WebGLUniformLocation, value: GLfloat) {

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { debounce, wrap } from 'lodash';
+import { debounce } from 'lodash';
 
 import { drawPoints } from 'src/pano/drawPoints';
 import { JRect, JPoint } from 'src/math';
@@ -8,6 +8,8 @@ import { JProgram } from 'src/webgl';
 
 import { fVertexData } from 'src/pano/assets/f_vertex';
 import { fColorData } from 'src/pano/assets/f_color';
+import { fUrl } from 'src/pano/assets/f_png';
+import { fTexcoordData } from 'src/pano/assets/f_texcoord';
 
 const setting = {
 	x: 111,
@@ -21,9 +23,22 @@ const setting = {
 	scaleZ: 1,
 }
 
+let fImage: HTMLImageElement | null;
+
+function loadF() {
+	return new Promise((resolve) => {
+		const img = new Image();
+		img.src = fUrl;
+		fImage = img;
+		img.onload = resolve;
+	})
+}
+
 main();
 
-function main() {
+async function main() {
+	await loadF();
+
 	const canvas = createCanvas();
 	const gl = canvas.getContext('webgl');
 	if (!gl) {
@@ -103,25 +118,32 @@ function drawF(gl: WebGLRenderingContext) {
 	const vert = `
 		attribute vec4 a_position;
 		attribute vec4 a_color;
+		attribute vec2 a_texcoord;
 
 		uniform mat4 u_projection;
 
 		varying vec4 v_color;
+		varying vec2 v_texcoord;
 
 		void main() {
 			gl_Position = u_projection * a_position;
 
-			v_color = a_color;
+			// v_color = a_color;
+			v_texcoord = a_texcoord;
 		}
 	`;
 
 	const frag = `
 		precision mediump float;
 
+		uniform sampler2D u_texture;
+
 		varying vec4 v_color;
+		varying vec2 v_texcoord;
 
 		void main() {
-			gl_FragColor = v_color;
+			// gl_FragColor = v_color;
+			gl_FragColor = texture2D(u_texture, v_texcoord);
 		}
 	`;
 
@@ -132,9 +154,16 @@ function drawF(gl: WebGLRenderingContext) {
 
 	gl.useProgram(program.program);
 
+	// create texture
+	const texture = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, fImage!);
+	gl.generateMipmap(gl.TEXTURE_2D);
+
 	const uniforms = program.getUniforms();
 	const projection = getTransform(gl);
 	uniforms.setValue('u_projection', projection);
+	uniforms.setValue('u_texture', 0);
 
 	// create vertex buffer
 	const buffer = gl.createBuffer();
@@ -146,6 +175,11 @@ function drawF(gl: WebGLRenderingContext) {
 	gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
 	gl.bufferData(gl.ARRAY_BUFFER, fColorData, gl.STATIC_DRAW);
 
+	// create texcoord bufer
+	const texcoordBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, fTexcoordData, gl.STATIC_DRAW);
+
 	// asign to attribute
 	const location = gl.getAttribLocation(program.program, 'a_position');
 	gl.enableVertexAttribArray(location);
@@ -156,6 +190,11 @@ function drawF(gl: WebGLRenderingContext) {
 	const colorLocation = gl.getAttribLocation(program.program, 'a_color');
 	gl.enableVertexAttribArray(colorLocation);
 	gl.vertexAttribPointer(colorLocation, 3, gl.UNSIGNED_BYTE, true, 0, 0);
+
+	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+	const texcoordLocation = gl.getAttribLocation(program.program, 'a_texcoord');
+	gl.enableVertexAttribArray(texcoordLocation);
+	gl.vertexAttribPointer(texcoordLocation, 2, gl.FLOAT, false, 0, 0);
 
 	gl.drawArrays(gl.TRIANGLES, 0, 16 * 6);
 }
