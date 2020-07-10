@@ -5,6 +5,7 @@
 			"dom",
 			"ESNext",
 		],
+		"experimentalDecorators": true,
 		"strict": true,
 		"strictNullChecks": true,
 		"alwaysStrict": true,

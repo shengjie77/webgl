@@ -10,6 +10,7 @@ import { fVertexData } from 'src/pano/assets/f_vertex';
 import { fColorData } from 'src/pano/assets/f_color';
 import { fUrl } from 'src/pano/assets/f_png';
 import { fTexcoordData } from 'src/pano/assets/f_texcoord';
+import * as validator from 'src/utils/validator';
 
 const setting = {
 	x: 111,
@@ -25,6 +26,14 @@ const setting = {
 
 let fImage: HTMLImageElement | null;
 
+
+class Foo {
+
+	@validator.range(0, 10)
+    public value: number = 0;
+
+}
+
 function loadF() {
 	return new Promise((resolve) => {
 		const img = new Image();
@@ -34,7 +43,10 @@ function loadF() {
 	})
 }
 
-main();
+const f = new Foo();
+f.value = 10;
+console.log(f.value)
+// main();
 
 async function main() {
 	await loadF();
@@ -196,7 +208,7 @@ function drawF(gl: WebGLRenderingContext) {
 	gl.enableVertexAttribArray(texcoordLocation);
 	gl.vertexAttribPointer(texcoordLocation, 2, gl.FLOAT, false, 0, 0);
 
-	gl.drawArrays(gl.TRIANGLES, 0, 16 * 6);
+    gl.drawArrays(gl.TRIANGLES, 0, 16 * 6);
 }
 
 function getTransform(gl: WebGLRenderingContext): number[] {
@@ -312,7 +324,7 @@ function createSlider(name: string, value: number, minValue: number, maxValue: n
 		const v = parseFloat(el.value);
 		onChange(v);
 		valueEl.textContent = el.value;
-	}, 0);
-
+    }, 0);
+    
 	return wrapper;
 }
