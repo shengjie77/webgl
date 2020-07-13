@@ -5,12 +5,12 @@ import { drawPoints } from 'src/pano/drawPoints';
 import { JRect, JPoint } from 'src/math';
 import { JPainter } from 'src/painter';
 import { JProgram } from 'src/webgl';
+import { JControl } from 'src/utils/control';
 
 import { fVertexData } from 'src/pano/assets/f_vertex';
 import { fColorData } from 'src/pano/assets/f_color';
 import { fUrl } from 'src/pano/assets/f_png';
 import { fTexcoordData } from 'src/pano/assets/f_texcoord';
-import * as validator from 'src/utils/validator';
 
 const setting = {
 	x: 111,
@@ -26,14 +26,6 @@ const setting = {
 
 let fImage: HTMLImageElement | null;
 
-
-class Foo {
-
-	@validator.range(0, 10)
-    public value: number = 0;
-
-}
-
 function loadF() {
 	return new Promise((resolve) => {
 		const img = new Image();
@@ -43,15 +35,15 @@ function loadF() {
 	})
 }
 
-const f = new Foo();
-f.value = 10;
-console.log(f.value)
-// main();
+main();
 
 async function main() {
 	await loadF();
 
 	const canvas = createCanvas();
+
+	new JControl(canvas);
+
 	const gl = canvas.getContext('webgl');
 	if (!gl) {
 		return;
