@@ -14,5 +14,6 @@ export interface JControlEventMap {
 }
 
 export interface JDragEvent {
-
+	x: number;
+	y: number;
 }

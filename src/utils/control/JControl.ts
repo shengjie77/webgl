@@ -1,6 +1,7 @@
 import { EventEmitter } from 'eventemitter3';
 
 import { JControlEventMap } from 'src/utils/control';
+import { JControlEvent } from './JControlEvent';
 
 export class JControl {
 
@@ -35,32 +36,41 @@ export class JControl {
 			}
 
 			if (isDragging) {
-				this.notifyDrag();
+				this.notifyDrag(ev);
 			} else {
 				isDragging = true;
-				this.notifyBeforeDrag();
+				this.notifyBeforeDrag(ev);
 			}
 		}
 
 		this._el.onmouseup = (ev) => {
 			isMouseDown = false;
 			if (isDragging) {
-				this.notifyAfterDrag();
+				this.notifyAfterDrag(ev);
 				isDragging = false;
 			}
 		}
 	}
 
-	private notifyBeforeDrag() {
-		console.log('Before Drag');
+	private notifyBeforeDrag(ev: MouseEvent) {
+		this.eventEmitter.emit(JControlEvent.BeforeDrag, {
+			x: ev.clientX,
+			y: ev.clientY,
+		})
 	}
 
-	private notifyDrag() {
-		console.log('Drag');
+	private notifyDrag(ev: MouseEvent) {
+		this.eventEmitter.emit(JControlEvent.Drag, {
+			x: ev.clientX,
+			y: ev.clientY,
+		})
 	}
 
-	private notifyAfterDrag() {
-		console.log('After Drag');
+	private notifyAfterDrag(ev: MouseEvent) {
+		this.eventEmitter.emit(JControlEvent.AfterDrag, {
+			x: ev.clientX,
+			y: ev.clientY,
+		})
 	}
 
 	private _el: HTMLElement;
