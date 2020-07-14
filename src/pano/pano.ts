@@ -11,6 +11,8 @@ import { fVertexData } from 'src/pano/assets/f_vertex';
 import { fColorData } from 'src/pano/assets/f_color';
 import { fUrl } from 'src/pano/assets/f_png';
 import { fTexcoordData } from 'src/pano/assets/f_texcoord';
+import { runPano } from 'src/pano/pano-three';
+import { createCanvas } from 'src/pano/createCanvas';
 
 const setting = {
 	x: 111,
@@ -35,7 +37,8 @@ function loadF() {
 	})
 }
 
-main();
+// main();
+runPano();
 
 async function main() {
 	await loadF();
@@ -104,18 +107,6 @@ function testDrawRect(gl: WebGLRenderingContext) {
 		height: 200,
 	})
 	painter.drawRect(rect);
-}
-
-function createCanvas(parent?: HTMLElement): HTMLCanvasElement {
-	const canvas = document.createElement('canvas');
-
-	canvas.style.width = '100vw';
-	canvas.style.height = '100vh';
-
-	const parentNode = parent ?? document.body;
-	parentNode.appendChild(canvas);
-
-	return canvas;
 }
 
 function drawF(gl: WebGLRenderingContext) {

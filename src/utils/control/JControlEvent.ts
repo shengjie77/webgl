@@ -11,6 +11,8 @@ export enum JControlEvent {
 
 export interface JControlEventMap {
 	[JControlEvent.BeforeDrag]: JDragEvent;
+	[JControlEvent.Drag]: JDragEvent;
+	[JControlEvent.AfterDrag]: JDragEvent;
 }
 
 export interface JDragEvent {
