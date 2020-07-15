@@ -35,6 +35,7 @@ export class JControl {
 				return;
 			}
 
+
 			if (isDragging) {
 				this.notifyDrag(ev);
 			} else {
