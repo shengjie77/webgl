@@ -16,17 +16,17 @@ export function runPano() {
 
 	const renderer = new THREE.WebGLRenderer();
 	document.body.append(renderer.domElement);
-	renderer.setSize(window.innerWidth, window.innerHeight);
 
 	const pano = createPano(() => {
 		render();
 	});
 
-	bindCamera(camera, renderer.domElement);
+	bindCamera(camera, document as any);
 
 	scene.add(pano);
 
 	function render() {
+		renderer.setSize(window.innerWidth, window.innerHeight);
 		renderer.render(scene, camera);
 
 		requestAnimationFrame(() => {
