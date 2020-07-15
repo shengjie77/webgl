@@ -62,7 +62,7 @@ function bindCamera(camera: THREE.PerspectiveCamera, el: HTMLElement) {
 	const control = new JControl(el);
 	let x = 0;
 	let y = 0;
-	const euler = new THREE.Euler();
+	const euler = new THREE.Euler(0, 0, 0, 'YXZ');
 	control.on(JControlEvent.BeforeDrag, (ev) => {
 		x = ev.x;
 		y = ev.y;
@@ -74,8 +74,8 @@ function bindCamera(camera: THREE.PerspectiveCamera, el: HTMLElement) {
 		const deltaY = ev.y - y;
 
 		const ratio = 0.002;
-		euler.y -= deltaX * ratio;
-		euler.x -= deltaY * ratio;
+		euler.y += deltaX * ratio;
+		euler.x += deltaY * ratio;
 
 		camera.quaternion.setFromEuler(euler);
 
