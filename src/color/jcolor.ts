@@ -1,3 +1,4 @@
+import { deprecated } from 'src/utils/deprecated';
 
 export type JRgba = [r: number, g: number, b: number, a: number];
 
@@ -8,15 +9,25 @@ export class JColor {
 	}
 
 	constructor(rgba: JRgba) {
-		[this.r, this.g, this.b, this.a] = rgba;
+		[this._red, this._green, this._blue, this._alpha] = rgba;
 	}
 
+	@deprecated()
 	public getRgba(): JRgba {
 		return [
-			this.r,
-			this.g,
-			this.b,
-			this.a,
+			this._red,
+			this._green,
+			this._blue,
+			this._alpha,
+		]
+	}
+
+	public get rgba() {
+		return [
+			this._red,
+			this._green,
+			this._blue,
+			this._alpha,
 		]
 	}
 
@@ -24,12 +35,12 @@ export class JColor {
 	// ---------------  Private Section Below  --------------- //
 	// ------------------------------------------------------- //
 
-	private r: number;
+	private _red: number;
 
-	private g: number;
+	private _green: number;
 
-	private b: number;
+	private _blue: number;
 
-	private a: number;
+	private _alpha: number;
 
 }
