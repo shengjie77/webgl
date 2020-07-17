@@ -12,37 +12,37 @@ export class JPen {
 		}
 
 		if (param.color) {
-			this.color = param.color;
+			this._color = param.color;
 		}
 
 		if (param.width) {
-			this.width = param.width;
+			this._width = param.width;
 		}
 	}
 
-	public setColor(color: JColor): void {
-		this.color = color;
+	public set color(v: JColor) {
+		this._color = v;
 	}
 
-	public getColor(): JColor {
-		return this.color;
+	public get color(): JColor {
+		return this._color;
 	}
 
-	public setWidth(width: number): void {
-		this.width = width;
+	public set width(v: number) {
+		this._width = v;
 	}
 
-	public getWidth(): number {
-		return this.width;
+	public get width(): number {
+		return this._width;
 	}
 
 	// ------------------------------------------------------- //
 	// ---------------  Private Section Below  --------------- //
 	// ------------------------------------------------------- //
 
-	private color: JColor = JColor.fromRgba([1, 1, 1, 1]);
+	private _color: JColor = JColor.fromRgba([1, 1, 1, 1]);
 
-	private width: number = 1;
+	private _width: number = 1;
 
 }
 
