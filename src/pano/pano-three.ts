@@ -11,10 +11,10 @@ export function runPano() {
 		75,
 		window.innerWidth / window.innerHeight,
 		0.1,
-		1000,
+		10000,
 	)
 
-	camera.applyQuaternion(new THREE.Quaternion(-0.108813, -0.843762, -0.186910, 0.4912108));
+	camera.applyQuaternion(new THREE.Quaternion(-0.000038, -0.982004, -0.188857, 0.0002014));
 
 	const renderer = new THREE.WebGLRenderer();
 	document.body.append(renderer.domElement);
@@ -26,8 +26,12 @@ export function runPano() {
 	bindCamera(camera, document as any);
 
 	scene.add(pano);
-	const model = createModel();
+	const model = createModel(new THREE.Vector3(2264, 427, 3148));
 	scene.add(model);
+	
+	const cameraPosition = new THREE.Vector3(2398, 1300, 479);
+	pano.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+	camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
 	function render() {
 		renderer.setSize(window.innerWidth, window.innerHeight);
@@ -38,19 +42,22 @@ export function runPano() {
 		})
 	}
 
+	window.onresize = () => {
+		render();
+	}
+
 	render();
 }
 
-function createModel() {
-	const size = 5;
+function createModel(position: THREE.Vector3) {
+	const size = 700;
 	const geo = new THREE.BoxGeometry(size, size, size);
 	const mat = new THREE.MeshBasicMaterial({
 		color: 'red',
 		depthTest: false,
 	})
 	const mesh = new THREE.Mesh(geo, mat);
-	const distance = 50;
-	mesh.position.set(distance, 0, distance);
+	mesh.position.set(position.x, position.y, position.z);
 
 	return mesh;
 }
