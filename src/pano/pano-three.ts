@@ -20,7 +20,7 @@ export function runPano() {
 	document.body.append(renderer.domElement);
 
 	const pano = createPano(() => {
-		render();
+		requestAnimationFrame(render);
 	});
 
 	bindCamera(camera, document as any);
@@ -28,31 +28,39 @@ export function runPano() {
 	scene.add(pano);
 	const model = createModel(new THREE.Vector3(2264, 427, 3148));
 	scene.add(model);
+
+	const color = 0xFFFFFF;
+	const intensity = 1;
+	const light = new THREE.DirectionalLight(color, intensity);
+	light.position.set(500, 2000, 0);
+	scene.add(light);
 	
 	const cameraPosition = new THREE.Vector3(2398, 1300, 479);
 	pano.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 	camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
-	function render() {
+	function render(time: number) {
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		renderer.render(scene, camera);
 
-		requestAnimationFrame(() => {
-			render();
-		})
+		const angle = time * 0.001;
+		model.rotation.x = angle;
+		model.rotation.y = angle;
+
+		requestAnimationFrame(render);
 	}
 
 	window.onresize = () => {
-		render();
+		requestAnimationFrame(render);
 	}
 
-	render();
+	requestAnimationFrame(render);
 }
 
 function createModel(position: THREE.Vector3) {
 	const size = 700;
 	const geo = new THREE.BoxGeometry(size, size, size);
-	const mat = new THREE.MeshBasicMaterial({
+	const mat = new THREE.MeshPhongMaterial({
 		color: 'red',
 		depthTest: false,
 	})
