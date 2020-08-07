@@ -91,14 +91,14 @@ export function runPano() {
 		// mesh.rotation.x = angle;
 		// mesh.rotation.y = angle;
 
-		// requestAnimationFrame(render);
+		requestAnimationFrame(render);
 	}
 
 	window.onresize = () => {
 		requestAnimationFrame(render);
 	}
 
-	// requestAnimationFrame(render);
+	requestAnimationFrame(render);
 }
 
 function createModel(position: THREE.Vector3) {
